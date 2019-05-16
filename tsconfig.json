@@ -15,7 +15,10 @@
     ],
     "moduleResolution": "node",
     "allowJs": true,
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "paths": {
+      "typed-delegates/*": ["./src/*"]
+    }
   },
   "include": [
     "./src/**/*.ts",

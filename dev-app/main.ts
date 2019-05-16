@@ -7,7 +7,7 @@ export function configure(aurelia: Aurelia) {
     .standardConfiguration()
     // load the plugin ../src
     // The "resources" is mapped to "../src" in aurelia.json "paths"
-    .feature('resources');
+    .feature('typed-delegates');
 
   aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
 

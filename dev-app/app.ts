@@ -1,8 +1,14 @@
+import {EventFunctionCollection} from "../src";
+import {GreetEvent} from "./greeter";
+
 export class App {
   public message: string = 'from Aurelia!';
+  public greeterDelegates: EventFunctionCollection;
+  public greetings: string[] = [];
 
-  clicked() {
-    // eslint-disable-next-line no-alert
-    alert('A primary button click or a touch');
+  constructor() {
+    this.greeterDelegates = [
+        GreetEvent.subscribe((event) => this.greetings.push(event.detail.text)),
+    ];
   }
 }

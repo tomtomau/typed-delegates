@@ -5,21 +5,18 @@
 When I use Aurelia, I tend to use native JavaScript CustomEvents to dispatch events up the DOM tree to interact between 
 components.
 
-For example, in a sub-component:
+For example, in a sub-component, I will dispatch an event when the delete comment button is clicked:
 ```ts
-const detail = {
-    reason: 'spam'
-};
-this.element.dispatchEvent(DOM.createCustomEvent('delete-comment', { bubbles: true, detail })); 
+this.element.dispatchEvent(DOM.createCustomEvent('delete-comment', { bubbles: true, detail: { reason: 'spam' })); 
 ```
 
 And then in another component up the DOM tree:
-```ts
-public deleteComment(event: CustomEvent<any>) {
-```
-
 ```html
 <some-dom-node delete-comment.delegate="deleteComment($event)"></some-dom-node>
+```
+
+```ts
+public deleteComment(event: CustomEvent<any>) {
 ```
 
 The immediate issues I had with this:
@@ -27,11 +24,11 @@ The immediate issues I had with this:
 * Event type is a magic string
 
 In the above example, `delete-comment` is a magic string present in both TypeScript and HTML and innocuous refactoring
-easily skips updating the template `.delegate` attribute.
+easily skips updating the template `.delegate` attribute in each usage.
 
 * There is no type safety around the events that are dispatched and the events which are captured.
 
-In the above example, the event detail was of type `{ reason: string }`. To make things more typesafe, we can first 
+In the above example, the event detail was of type `{ reason: string }`. To make things more type safe, we can first 
 extract and export this as a type:
 
 ```ts
@@ -83,9 +80,10 @@ In the component/view model that dispatches the event:
 ```ts
 import { CommentEvents } from './comment-events';
 
+// The event has a create() method which removes the need to call DOM.createCustomEvent()
 this.element.dispatchEvent(CommentEvents.edit.create({ id: 'some-uuid-here', text: 'foobar' }));
 
-// TypeScript compiler will fail here as the EventDetail does not match the type IEditComment
+// ❌ TypeScript compiler will fail here as the EventDetail does not match the type IEditComment
 this.element.dispatchEvent(CommentEvents.edit.create({ id: 9, text: { foo: 'bar' }));
 ```
 
@@ -103,7 +101,7 @@ class MyViewModel {
     }
     
     private function editComment(event: CustomEvent<IEditComment>) {
-        // Some impelementation goes here
+        // Some implementation goes here
         const id = event.detail.id;
         const text = event.detail.text;
     }
