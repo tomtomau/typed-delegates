@@ -42,7 +42,7 @@ And then import this into our event listener definition:
 public deleteComment(event: CustomEvent<IDeleteCommentDetail>) {
 ```
 
-Now we have improved typesafety, but we still don't have any guarantees that you're subscribing to the correct event
+Now we have improved type safety, but we still don't have any guarantees that you're subscribing to the correct event
 with the correct event detail interface.
 
 ## Typed Delegates Example
@@ -121,7 +121,7 @@ and the corresponding template:
 Pros:
 
 * No magic strings, only a single definition
-* Type safety for the interface of the detail object in both the dispatching and subscribing locations
+* Type safety for the interface of the detail object in both the dispatching and subscribing callers
 
 Cons:
 
